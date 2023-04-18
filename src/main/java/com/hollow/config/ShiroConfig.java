@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Hashtable;
+import java.util.Map;
+
 
 /**
  * @author 刘继涛
@@ -22,6 +25,19 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager securityManager){
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         factoryBean.setSecurityManager(securityManager);
+        //权限设置
+        Map<String, String> map = new Hashtable<>();
+        //用户必须登录才能访问的
+        map.put("/main","authc");
+        //用户必须得到授权才可以访问的;
+        map.put("/manage","perms[manage]");
+        //用户必须拥有角色才能访问的
+        map.put("/administrator","roles[administrator]");
+        //通过map来设置过滤器
+        factoryBean.setFilterChainDefinitionMap(map);
+        //设置登录页面，如果用户没登录就会跳转到login.jsp但这不是我们想要的，我们要让他跳转到login.html
+        //并且要注意，这里的路径是先会访问到我门controller->视图解析器->templates
+        factoryBean.setLoginUrl("/login");
         return factoryBean;
     }
 

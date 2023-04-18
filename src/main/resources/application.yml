@@ -4,6 +4,9 @@ spring:
     username: root
     password: 717899
     url: jdbc:mysql://localhost:3306/springboot_shiro
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

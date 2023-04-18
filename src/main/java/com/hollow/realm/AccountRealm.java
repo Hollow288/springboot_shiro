@@ -7,16 +7,13 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 /**
  * @author 刘继涛
  * @version 1.0
  */
 
-@Component
+
 public class AccountRealm extends AuthorizingRealm {
 
     @Autowired
