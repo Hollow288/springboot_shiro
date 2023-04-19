@@ -2,11 +2,17 @@ package com.hollow.realm;
 
 import com.hollow.entity.Account;
 import com.hollow.service.AccountService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author 刘继涛
@@ -19,17 +25,29 @@ public class AccountRealm extends AuthorizingRealm {
     @Autowired
     private AccountService accountService;
     /**
-     * 授权
+     * 授权操作
      * @param principalCollection
      * @return
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+        //获取当前登录的用户信息
+        Subject subject = SecurityUtils.getSubject();
+        Account account = (Account) subject.getPrincipal();
+
+        //设置角色
+        Set<String> roles = new HashSet<>();
+        roles.add(account.getRole());
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roles);
+
+        //设置权限
+        info.addStringPermission(account.getPerms());
+
+        return info;
     }
 
     /**
-     * 认证
+     * 认证操作
      * @param authenticationToken
      * @return
      * @throws AuthenticationException

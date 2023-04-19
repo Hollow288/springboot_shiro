@@ -1,9 +1,9 @@
 package com.hollow.config;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.hollow.realm.AccountRealm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.ShiroFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +38,8 @@ public class ShiroConfig {
         //设置登录页面，如果用户没登录就会跳转到login.jsp但这不是我们想要的，我们要让他跳转到login.html
         //并且要注意，这里的路径是先会访问到我门controller->视图解析器->templates
         factoryBean.setLoginUrl("/login");
+        //设置未授权界面
+        factoryBean.setUnauthorizedUrl("/unauth");
         return factoryBean;
     }
 
@@ -54,5 +56,12 @@ public class ShiroConfig {
     @Bean
     public AccountRealm accountRealm(){
         return new AccountRealm();
+    }
+
+
+    //引入方言
+    @Bean
+    public ShiroDialect shiroDialect(){
+        return new ShiroDialect();
     }
 }
